@@ -5,22 +5,23 @@ from pydub import AudioSegment
 from pydub.playback import play
 import io
 
-pygame.mixer.init()
-sound = AudioSegment.from_file("sounds/piano.mp3")
+class Sound:
+    # Setup the sound engin
+    pygame.mixer.init()
+    sound = AudioSegment.from_file("sounds/piano.mp3")
+
+    # Manually (just for now) choosing the note of each language
+    pitch = {
+        'hebrew': 0,            # Do
+        'english': 2/12         # Re
+        # 'other': 4/12         # MI
+    }
+
 
 # Returns A new sound object with the modified pitch.
 def change_pitch(sound, octaves):
     new_sample_rate = int(sound.frame_rate * (2.0 ** octaves))
     return sound._spawn(sound.raw_data, overrides={'frame_rate': new_sample_rate})
-
-
-pitch = {
-    'hebrew': 0,            # Do
-    'english': 2/12         # Re
-    # 'other': 4/12         # MI
-}
-
-
 
 # Play the corresponding sound for the detected language
 def play_sound_for_language(language):
@@ -45,10 +46,12 @@ def get_keyboard_language():
     else:
         return 'unknown'
 
+
 # Listen for ALT+SHIFT key press and handle language change
 def listen_for_shift_alt():
     keyboard.add_hotkey('alt+shift', lambda: play_sound_for_language(get_keyboard_language()))
     keyboard.wait()
-
+    
+    
 if __name__ == "__main__":
     listen_for_shift_alt()
