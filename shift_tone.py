@@ -1,18 +1,33 @@
 import ctypes
 import keyboard
 import pygame
+from pydub import AudioSegment
+from pydub.playback import play
+import io
 
-# Sound files
-sounds = {
-    'hebrew': 'sounds/hebrew.mp3',
-    'english': 'sounds/english.mp3'
+pygame.mixer.init()
+sound = AudioSegment.from_file("sounds/piano.mp3")
+
+# Returns A new sound object with the modified pitch.
+def change_pitch(sound, octaves):
+    new_sample_rate = int(sound.frame_rate * (2.0 ** octaves))
+    return sound._spawn(sound.raw_data, overrides={'frame_rate': new_sample_rate})
+
+
+pitch = {
+    'hebrew': 0,            # Do
+    'english': 2/12         # Re
+    # 'other': 4/12         # MI
 }
+
+
 
 # Play the corresponding sound for the detected language
 def play_sound_for_language(language):
-    pygame.mixer.init()
-    if language in sounds:
-        pygame.mixer.music.load(sounds[language])
+    if language in pitch:
+        modified_sound = change_pitch(sound, pitch[language]).export(io.BytesIO(), format="wav")
+        modified_sound.seek(0)
+        pygame.mixer.music.load(modified_sound)
         pygame.mixer.music.play()
 
 # Detect the current keyboard language
@@ -37,5 +52,3 @@ def listen_for_shift_alt():
 
 if __name__ == "__main__":
     listen_for_shift_alt()
-
-
