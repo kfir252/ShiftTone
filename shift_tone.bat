@@ -1,2 +1,2 @@
 @echo off
-python C:\Users\Avraham\Desktop\keyboard-voice\shift_tone.py
+python C:\ShiftTone\shift_tone.py

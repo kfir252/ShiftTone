@@ -5,18 +5,16 @@ from pydub import AudioSegment
 from pydub.playback import play
 import io
 
-class Sound:
-    # Setup the sound engin
-    pygame.mixer.init()
-    sound = AudioSegment.from_file("sounds/piano.mp3")
+# Setup the sound engin and
+pygame.mixer.init()
+sound = AudioSegment.from_file("C:\ShiftTone\sounds\piano.mp3")
 
-    # Manually (just for now) choosing the note of each language
-    pitch = {
-        'hebrew': 0,            # Do
-        'english': 2/12         # Re
-        # 'other': 4/12         # MI
-    }
-
+# Manually (just for now) choosing the note of each language
+pitch = {
+    'hebrew': 0,            # Do
+    'english': 2/12         # Re
+    # 'other': 4/12         # MI
+}
 
 # Returns A new sound object with the modified pitch.
 def change_pitch(sound, octaves):
@@ -46,12 +44,19 @@ def get_keyboard_language():
     else:
         return 'unknown'
 
-
+def play_Cups():
+    modified_sound = change_pitch(sound, -24/12).export(io.BytesIO(), format="wav") 
+    modified_sound.seek(0)
+    pygame.mixer.music.load(modified_sound)
+    pygame.mixer.music.play()
+    
 # Listen for ALT+SHIFT key press and handle language change
 def listen_for_shift_alt():
     keyboard.add_hotkey('alt+shift', lambda: play_sound_for_language(get_keyboard_language()))
+    keyboard.add_hotkey('caps lock', lambda: play_Cups())
     keyboard.wait()
-    
+
+
     
 if __name__ == "__main__":
     listen_for_shift_alt()
