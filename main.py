@@ -1,12 +1,13 @@
-from sounds import *
-from languages import *
+from sounds_manager import *
+from languages_manager import *
+from keys_manager import *
 import keyboard
 
 
 # Listen for ALT+SHIFT key press and handle language change
 def keyboard_listener():
-    keyboard.add_hotkey('alt+shift', lambda: play_pitch(sound, language_pitch[get_keyboard_language()]))
-    keyboard.add_hotkey('caps lock', lambda: play_pitch(sound, (-2, 'SI')))
+    for hotkey, func in hotkeys_functions:
+        keyboard.add_hotkey(hotkey, func)
     keyboard.wait()
 
 

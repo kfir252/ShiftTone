@@ -17,7 +17,14 @@ note_HZ = {
     'SI'    : 11/12
 }
 
-sound = AudioSegment.from_file("C:\ShiftTone\sounds\piano.mp3")
+sounds = {
+    'piano': "piano.mp3",
+    'fart': "Fart.mp3"
+}
+
+for name, filename  in sounds.items():
+    sounds[name] = AudioSegment.from_file("C:\ShiftTone\sounds\\" + filename)
+   
 
 # Returns A new sound object with the modified note.
 def change_pitch(sound, pitch):
