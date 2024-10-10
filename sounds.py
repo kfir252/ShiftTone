@@ -1,11 +1,12 @@
-import ctypes
-import keyboard
 import pygame
+pygame.mixer.init()
+
 from pydub import AudioSegment
 from pydub.playback import play
 import io
 
-# Mapping note name to it's HZ
+
+# Mapping note to it's HZ
 note_HZ = {
     'DO'    : 0,
     'RE'    : 2/12,
@@ -16,16 +17,12 @@ note_HZ = {
     'SI'    : 11/12
 }
 
-# Manually choosing the note of each language
-language_pitch = {
-    'hebrew': (0, 'DO'),
-    'english': (1, 'RE')
-}
+sound = AudioSegment.from_file("C:\ShiftTone\sounds\piano.mp3")
 
 # Returns A new sound object with the modified note.
 def change_pitch(sound, pitch):
     octaves, note = pitch
-    new_sample_rate = int(sound.frame_rate * (2.0 ** (octaves + note_HZ[note])))
+    new_sample_rate = int(sound.frame_rate  * (2.0 ** (octaves + note_HZ[note])))
     return sound._spawn(sound.raw_data, overrides={'frame_rate': new_sample_rate})
 
 def play_sound(sound):
