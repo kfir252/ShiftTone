@@ -6,7 +6,7 @@ import keyboard
 
 # Listen for ALT+SHIFT key press and handle language change
 def keyboard_listener():
-    for hotkey, func in hotkeys_functions:
+    for hotkey, func in hotkeys_functions.items():
         keyboard.add_hotkey(hotkey, func)
     keyboard.wait()
 

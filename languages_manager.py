@@ -1,10 +1,11 @@
 import ctypes
+from sounds_manager import *
 
 
 # Manually choosing the note of each language
-language_pitch = {
-    'hebrew': (0, 'DO'),
-    'english': (1, 'RE')
+language_sound = {
+    'hebrew' :  (sounds['duck'], 0, 'DO'),
+    'english':  (sounds['piano'], 1, 'RE')
 }
 
 # Detect the current keyboard language
